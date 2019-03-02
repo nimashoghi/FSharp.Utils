@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CB381BE4-DB3
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharp.Utils", "src\FSharp.Utils\FSharp.Utils.fsproj", "{99EDC009-20B1-461D-B837-A066E1B64EE9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F00F27EE-7AFD-44E9-A66F-46E42396FD0D}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharp.Utils.UnitTests", "tests\FSharp.Utils.UnitTests\FSharp.Utils.UnitTests.fsproj", "{C6ADEF28-5F76-4225-8D6C-6E38D5E857A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,8 +36,21 @@ Global
 		{99EDC009-20B1-461D-B837-A066E1B64EE9}.Release|x64.Build.0 = Release|Any CPU
 		{99EDC009-20B1-461D-B837-A066E1B64EE9}.Release|x86.ActiveCfg = Release|Any CPU
 		{99EDC009-20B1-461D-B837-A066E1B64EE9}.Release|x86.Build.0 = Release|Any CPU
+		{C6ADEF28-5F76-4225-8D6C-6E38D5E857A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6ADEF28-5F76-4225-8D6C-6E38D5E857A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6ADEF28-5F76-4225-8D6C-6E38D5E857A2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C6ADEF28-5F76-4225-8D6C-6E38D5E857A2}.Debug|x64.Build.0 = Debug|Any CPU
+		{C6ADEF28-5F76-4225-8D6C-6E38D5E857A2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C6ADEF28-5F76-4225-8D6C-6E38D5E857A2}.Debug|x86.Build.0 = Debug|Any CPU
+		{C6ADEF28-5F76-4225-8D6C-6E38D5E857A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6ADEF28-5F76-4225-8D6C-6E38D5E857A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6ADEF28-5F76-4225-8D6C-6E38D5E857A2}.Release|x64.ActiveCfg = Release|Any CPU
+		{C6ADEF28-5F76-4225-8D6C-6E38D5E857A2}.Release|x64.Build.0 = Release|Any CPU
+		{C6ADEF28-5F76-4225-8D6C-6E38D5E857A2}.Release|x86.ActiveCfg = Release|Any CPU
+		{C6ADEF28-5F76-4225-8D6C-6E38D5E857A2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{99EDC009-20B1-461D-B837-A066E1B64EE9} = {CB381BE4-DB32-4F35-9FDE-EC656A852DCE}
+		{C6ADEF28-5F76-4225-8D6C-6E38D5E857A2} = {F00F27EE-7AFD-44E9-A66F-46E42396FD0D}
 	EndGlobalSection
 EndGlobal
