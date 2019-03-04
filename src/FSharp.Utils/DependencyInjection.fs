@@ -11,7 +11,7 @@ let internal (|SingleType|TupleType|) ``type`` =
     then TupleType (FSharpType.GetTupleElements ``type``)
     else SingleType ``type``
 
-let internal createDependencies<'dependencies> (provider: IServiceProvider) =
+let resolve<'dependencies> (provider: IServiceProvider) =
     let ``type`` = typeof<'dependencies>
     match ``type`` with
     | SingleType ``type`` when ``type`` = typeof<unit> ->
@@ -30,21 +30,21 @@ let internal createDependencies<'dependencies> (provider: IServiceProvider) =
 let injectScoped (service: Injection<'dependencies, 'service>) (services: IServiceCollection) =
     services.AddScoped<'service> (
         fun provider ->
-            createDependencies<'dependencies> provider
+            resolve<'dependencies> provider
             |> service
     )
 
 let injectSingleton (service: Injection<'dependencies, 'service>) (services: IServiceCollection) =
     services.AddSingleton<'service> (
         fun provider ->
-            createDependencies<'dependencies> provider
+            resolve<'dependencies> provider
             |> service
     )
 
 let injectTransient (service: Injection<'dependencies, 'service>) (services: IServiceCollection) =
     services.AddTransient<'service> (
         fun provider ->
-            createDependencies<'dependencies> provider
+            resolve<'dependencies> provider
             |> service
     )
 
