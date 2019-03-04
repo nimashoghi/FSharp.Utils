@@ -7,53 +7,53 @@ open FSharp.Reflection
 
 let (|OptionType|_|) (``type``: Type) =
     if ``type``.IsGenericType &&
-        ``type``.GetGenericTypeDefinition() = typedefof<_ option>
+        ``type``.GetGenericTypeDefinition () = typedefof<_ option>
     then Some ``type``.GenericTypeArguments.[0]
     else None
 
 let (|ResultType|_|) (``type``: Type) =
     if ``type``.IsGenericType &&
-        ``type``.GetGenericTypeDefinition() = typedefof<Result<_, _>>
+        ``type``.GetGenericTypeDefinition () = typedefof<Result<_, _>>
     then Some (``type``.GenericTypeArguments.[0], ``type``.GenericTypeArguments.[1])
     else None
 
 let (|NullableType|_|) (``type``: Type) =
-    if ``type``.IsGenericType && ``type``.GetGenericTypeDefinition() = typedefof<Nullable<_>>
+    if ``type``.IsGenericType && ``type``.GetGenericTypeDefinition () = typedefof<Nullable<_>>
     then Some``type``.GenericTypeArguments.[0]
     else None
 
 let (|ObservableType|_|) (``type``: Type) =
-    ``type``.GetInterfaces()
+    ``type``.GetInterfaces ()
     |> Array.tryFind (fun ``interface`` ->
         ``interface``.IsGenericType
-        && ``interface``.GetGenericTypeDefinition() = typedefof<IObservable<_>>)
+        && ``interface``.GetGenericTypeDefinition () = typedefof<IObservable<_>>)
 
 let (|TaskType|_|) (``type``: Type) =
-    if ``type``.IsGenericType && ``type``.GetGenericTypeDefinition() = typedefof<Task<_>>
+    if ``type``.IsGenericType && ``type``.GetGenericTypeDefinition () = typedefof<Task<_>>
     then Some ``type``.GenericTypeArguments.[0]
     else None
 
 let (|ArrayType|_|) (``type``: Type) =
     if ``type``.IsArray
-    then Some(``type``.GetElementType())
+    then Some (``type``.GetElementType ())
     else None
 
 let (|ListType|_|) (``type``: Type) =
-    if ``type``.IsGenericType && ``type``.GetGenericTypeDefinition() = typedefof<_ list>
+    if ``type``.IsGenericType && ``type``.GetGenericTypeDefinition () = typedefof<_ list>
     then Some ``type``.GenericTypeArguments.[0]
     else None
 
 let (|SeqType|_|) (``type``: Type) =
     ``type``
-        .GetInterfaces()
-        |> Array.tryFind(fun ``interface`` ->
+        .GetInterfaces ()
+        |> Array.tryFind (fun ``interface`` ->
             ``interface``.IsGenericType &&
-            ``interface``.GetGenericTypeDefinition() = typedefof<IEnumerable<_>>)
-        |> Option.map(fun ``interface`` -> ``interface``.GenericTypeArguments.[0])
+            ``interface``.GetGenericTypeDefinition () = typedefof<IEnumerable<_>>)
+        |> Option.map (fun ``interface`` -> ``interface``.GenericTypeArguments.[0])
 
 let (|StringType|_|) ``type`` =
     if ``type`` = typeof<string>
-    then Some()
+    then Some ()
     else None
 
 let (|EnumerableType|_|) (``type``: Type) =
@@ -65,12 +65,12 @@ let (|EnumerableType|_|) (``type``: Type) =
 
 let internal (|CaseTag|_|) i (case: UnionCaseInfo) =
     if case.Tag = i
-    then Some()
+    then Some ()
     else None
 
 // TODO: Memoize this
 let internal unionValue f (x: obj) =
-    let ``type`` = x.GetType()
+    let ``type`` = x.GetType ()
     if FSharpType.IsUnion ``type`` then
         let case, fields = FSharpValue.GetUnionFields(x, ``type``)
         f case fields
@@ -82,7 +82,7 @@ let internal optionValue x =
     match box x with
     | null -> None
     | x ->
-        unionValue(
+        unionValue (
             fun case [|value|] ->
                 match case with
                 | CaseTag 0 -> None
@@ -90,7 +90,7 @@ let internal optionValue x =
         ) x
 
 let internal resultValue x =
-    unionValue(
+    unionValue (
         fun case [|value|] ->
             match case with
             | CaseTag 0 -> Ok value
@@ -102,7 +102,7 @@ module internal DynamicList =
         typedefof<_ list>
             .MakeGenericType(``type``)
             .GetProperty(name)
-            .GetValue(this)
+            .GetValue this
 
     let isEmpty ``type`` list = getProperty ``type`` "IsEmpty" list |> unbox<bool>
     let head ``type`` list = getProperty ``type`` "Head" list
@@ -122,24 +122,24 @@ let listValue (listType: Type) x =
     |> List.rev
 
 let (|List|_|) (x: obj) =
-    match x.GetType() with
-    | ListType ``type`` -> Some(listValue ``type`` x)
+    match x.GetType () with
+    | ListType ``type`` -> Some (listValue ``type`` x)
     | _ -> None
 
 let (|Option|_|) (x: obj) =
-    match x.GetType() with
-    | OptionType _ -> Some(optionValue x)
+    match x.GetType () with
+    | OptionType _ -> Some (optionValue x)
     | _ -> None
 
 let (|Result|_|) (x: obj) =
-    match x.GetType() with
-    | ResultType _ -> Some(resultValue x)
+    match x.GetType () with
+    | ResultType _ -> Some (resultValue x)
     | _ -> None
 
 let (|ValidationResult|_|) (x: obj) =
-    match x.GetType() with
+    match x.GetType () with
     | ResultType (_, ListType _) ->
         match resultValue x with
-        | Ok value -> Some(Ok value)
-        | Error (List errors) -> Some(Error errors)
+        | Ok value -> Some (Ok value)
+        | Error (List errors) -> Some (Error errors)
     | _ -> None
