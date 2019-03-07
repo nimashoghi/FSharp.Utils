@@ -3,11 +3,12 @@
     <PackageId>FSharp.Utils</PackageId>
     <Title>FSharp.Utils</Title>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.0.4</Version>
+    <Version>0.0.5</Version>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Reflection.fs" />
+    <Compile Include="HashSet.fs" />
     <Compile Include="Dictionary.fs" />
     <Compile Include="TaskBuilder.fs" />
     <Compile Include="Task.fs" />
