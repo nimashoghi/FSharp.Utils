@@ -10,7 +10,7 @@ module TaskExtensions =
 
 [<RequireQualifiedAccess>]
 module Task =
-    let completed = Task.FromResult ()
+    let completed = Task.FromResult  ()
 
     let continueWith
         (f: 'input Task -> unit)
@@ -23,12 +23,12 @@ module Task =
         (f: 'input -> 'output)
         (x: 'input Task)
         : 'output Task =
-        let source = TaskCompletionSource()
+        let source = TaskCompletionSource ()
         x
         |> continueWith (
             fun task ->
-                if task.RanToCompletion then source.SetResult(f task.Result)
-                else if task.IsCanceled then source.SetCanceled()
+                if task.RanToCompletion then source.SetResult (f task.Result)
+                else if task.IsCanceled then source.SetCanceled ()
                 else if task.IsFaulted then source.SetException task.Exception
         )
         source.Task
@@ -37,7 +37,7 @@ module Task =
         (f: 'input -> 'output Task)
         (x: 'input Task)
         : 'output Task =
-        let source = TaskCompletionSource()
+        let source = TaskCompletionSource ()
         x
         |> continueWith (
             fun task ->
@@ -46,10 +46,10 @@ module Task =
                     |> continueWith (
                         fun task ->
                             if task.IsCompleted then source.SetResult task.Result
-                            else if task.IsCanceled then source.SetCanceled()
+                            else if task.IsCanceled then source.SetCanceled ()
                             else if task.IsFaulted then source.SetException task.Exception
                     )
-                else if task.IsCanceled then source.SetCanceled()
+                else if task.IsCanceled then source.SetCanceled ()
                 else if task.IsFaulted then source.SetException task.Exception
         )
         source.Task

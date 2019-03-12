@@ -17,6 +17,9 @@ open System.Runtime.CompilerServices
 [<Struct>]
 type AsyncResult<'value, 'error> = AsyncResult of Result<'value, 'error list> Task
 
+module Operators =
+    let inline (~%) result = AsyncResult result
+
 // This module is not really obsolete, but it's not intended to be referenced directly from user code.
 // However, it can't be private because it is used within inline functions that *are* user-visible.
 // Marking it as obsolete is a workaround to hide it from auto-completion tools.
@@ -259,7 +262,7 @@ module TaskBuilder =
         static member inline ($) (Priority1, AsyncResult task: AsyncResult<'a, 'error>) = ReturnFrom task
 
     // New style task builder.
-    type TaskBuilderV2() =
+    type TaskBuilder() =
         // These methods are consistent between all builders.
         member __.Delay(f : unit -> Step<_>) = f
         member __.Run(f : unit -> Step<'m>) = run f
@@ -281,8 +284,8 @@ module ContextSensitive =
 
     /// Builds a `System.Threading.Tasks.Task<'a>` similarly to a C# async/await method.
     /// Use this like `task { let! taskResult = someTask(); return taskResult.ToString(); }`.
-    let task = TaskBuilderV2()
+    let task = TaskBuilder()
 
-    type TaskBuilderV2 with
+    type TaskBuilder with
         member inline __.Bind (task, continuation : 'a -> 'b Step) : 'b Step = (BindS.Priority1 >>= task) continuation
         member inline __.ReturnFrom a                              : 'b Step = ReturnFromS.Priority1 $ a
