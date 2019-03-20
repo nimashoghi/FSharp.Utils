@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FsCheck.NUnit" Version="2.13.0" />
     <PackageReference Include="nunit" Version="3.11.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
@@ -16,6 +17,7 @@
   <ItemGroup>
     <Compile Include="HashSet.fs" />
     <Compile Include="Dictionary.fs" />
+    <Compile Include="List.fs" />
     <Compile Include="Reflection.fs" />
     <Compile Include="Quotations.fs" />
     <Compile Include="Guid.fs" />
