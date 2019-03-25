@@ -9,6 +9,7 @@ namespace rec FSharp.Utils.Tasks
 
 open System
 open System.Diagnostics
+open System.Reactive.Linq
 open System.Reactive.Threading.Tasks
 open System.Runtime.CompilerServices
 open System.Runtime.ExceptionServices
@@ -223,8 +224,8 @@ module TplPrimitives =
                     override __.Await(csm) = awaitable.Await(&csm)
                     override this.GetNext() =
                         try
-                            let next =  awaitable.GetNext()
-                            if next.IsCompletedSuccessfully then continuation() else
+                            let next = awaitable.GetNext()
+                            if next.IsCompletedSuccessfully then ret next.Result else
                                 awaitable <- next.awaitable
                                 Ply(await = this)
                         with ex -> catch ex
@@ -357,6 +358,18 @@ module TplPrimitives =
             else
                 Binder<'u>.PlyAwait(ply, (fun x -> cont x))
 
+    // TODO: Make this implementation much more efficient by adding support for INotifyCompletion
+    //       right now we only have ICriticalNotifyCompletion support
+    let forObservableLoop (obs: 't IObservable) (cont: 't -> Ply<unit>) =
+        let task =
+            obs
+                .SelectMany(fun value -> runPly(cont value).AsTask())
+                .ToList()
+                .Select(ignore)
+                .ToTask()
+            :> Task
+        Binder<_>.Specialized<UnitTaskAwaiterMethods<_>,_,_>(task.GetAwaiter(), ret)
+
     // Supporting types to have the compiler do what we want with respect to overload resolution.
     type Id<'t> = class end
     type Default2() = class end
@@ -451,6 +464,7 @@ module TplPrimitives =
 
         member inline __.ReturnFrom(task: ^taskLike)                        = Bind.Invoke(task, ret)
         member inline __.Bind(task: ^taskLike, continuation: 't -> Ply<'u>) = Bind.Invoke(task, continuation)
+        member inline __.For(obs: 't IObservable, cont : 't -> Ply<unit>)                    = forObservableLoop obs cont
 
         member inline __.Combine(ply : Ply<unit>, continuation: unit -> Ply<'t>)          = combine ply continuation
         member inline __.While(condition : unit -> bool, body : unit -> Ply<unit>)        = whileLoop condition body

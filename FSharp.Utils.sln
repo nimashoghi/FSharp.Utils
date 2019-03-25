@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F00F27EE
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharp.Utils.UnitTests", "tests\FSharp.Utils.UnitTests\FSharp.Utils.UnitTests.fsproj", "{C6ADEF28-5F76-4225-8D6C-6E38D5E857A2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{3BD71E6A-2AC2-432D-A717-49CC774CA826}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FSharp.Utils.Sample.TaskBuilder", "samples\FSharp.Utils.Sample.TaskBuilder\FSharp.Utils.Sample.TaskBuilder.fsproj", "{5E733F4F-98B7-4A57-8346-F8D4D7091D6F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,9 +52,22 @@ Global
 		{C6ADEF28-5F76-4225-8D6C-6E38D5E857A2}.Release|x64.Build.0 = Release|Any CPU
 		{C6ADEF28-5F76-4225-8D6C-6E38D5E857A2}.Release|x86.ActiveCfg = Release|Any CPU
 		{C6ADEF28-5F76-4225-8D6C-6E38D5E857A2}.Release|x86.Build.0 = Release|Any CPU
+		{5E733F4F-98B7-4A57-8346-F8D4D7091D6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E733F4F-98B7-4A57-8346-F8D4D7091D6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E733F4F-98B7-4A57-8346-F8D4D7091D6F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5E733F4F-98B7-4A57-8346-F8D4D7091D6F}.Debug|x64.Build.0 = Debug|Any CPU
+		{5E733F4F-98B7-4A57-8346-F8D4D7091D6F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5E733F4F-98B7-4A57-8346-F8D4D7091D6F}.Debug|x86.Build.0 = Debug|Any CPU
+		{5E733F4F-98B7-4A57-8346-F8D4D7091D6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E733F4F-98B7-4A57-8346-F8D4D7091D6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E733F4F-98B7-4A57-8346-F8D4D7091D6F}.Release|x64.ActiveCfg = Release|Any CPU
+		{5E733F4F-98B7-4A57-8346-F8D4D7091D6F}.Release|x64.Build.0 = Release|Any CPU
+		{5E733F4F-98B7-4A57-8346-F8D4D7091D6F}.Release|x86.ActiveCfg = Release|Any CPU
+		{5E733F4F-98B7-4A57-8346-F8D4D7091D6F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{99EDC009-20B1-461D-B837-A066E1B64EE9} = {CB381BE4-DB32-4F35-9FDE-EC656A852DCE}
 		{C6ADEF28-5F76-4225-8D6C-6E38D5E857A2} = {F00F27EE-7AFD-44E9-A66F-46E42396FD0D}
+		{5E733F4F-98B7-4A57-8346-F8D4D7091D6F} = {3BD71E6A-2AC2-432D-A717-49CC774CA826}
 	EndGlobalSection
 EndGlobal
