@@ -2,6 +2,8 @@ module FSharp.Utils.UnitTests.Option
 
 open System.Threading.Tasks
 open NUnit.Framework
+open FsCheck
+open FsCheck.NUnit
 open Swensen.Unquote
 open FSharp.Utils
 
@@ -24,16 +26,15 @@ module ``Option::getOrRaise`` =
         raises<exn> <@ None |> Option.getOrRaise (exn "Hello world") @>
 
 module ``Option::ofNullObj`` =
-    [<Test>]
-    let ``basic test`` () =
-        Option.ofNullObj 1
-        =! Some 1
+    [<Property>]
+    let ``nonNull test`` (value: string) =
+        if isNull value
+        then Option.ofNullObj value =! None
+        else Option.ofNullObj value =! Some value
 
 module ``Option::toNullObj`` =
-    [<Test>]
-    let ``basic test`` () =
-        Option.toNullObj (Some 1)
-        =! 1
+    [<Property>]
+    let ``basic test`` (value: string) = Option.toNullObj (Some value) =! value
 
 module ``Option::bindTask`` =
     [<Test>]

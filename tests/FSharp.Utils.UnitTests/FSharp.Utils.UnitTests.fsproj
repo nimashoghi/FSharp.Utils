@@ -22,6 +22,7 @@
     <Compile Include="Quotations.fs" />
     <Compile Include="Guid.fs" />
     <Compile Include="Option.fs" />
+    <Compile Include="ValueOption.fs" />
     <Compile Include="Time.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

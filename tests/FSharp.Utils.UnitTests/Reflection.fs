@@ -1,6 +1,7 @@
 module FSharp.Utils.UnitTests.Reflection
 
 open NUnit.Framework
+open FsCheck.NUnit
 open Swensen.Unquote
 
 open FSharp.Utils.Reflection
@@ -20,6 +21,21 @@ module ``Handlers`` =
             |> box
             |> optionValue
             =! None
+
+    module ``valueOptionValue`` =
+        [<Property>]
+        let ``some`` (value: int) =
+            Some value
+            |> box
+            |> valueOptionValue
+            =! ValueSome (box value)
+
+        [<Test>]
+        let ``none`` () =
+            ValueNone
+            |> box
+            |> valueOptionValue
+            =! ValueNone
 
     module ``resultValue`` =
         [<Test>]

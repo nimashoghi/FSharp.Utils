@@ -89,26 +89,26 @@ let internal optionValue x =
     | null -> None
     | x ->
         unionValue (
-            fun case [|value|] ->
+            fun case args ->
                 match case with
                 | CaseTag 0 -> None
-                | CaseTag 1 -> Some value
+                | CaseTag 1 -> Some args.[0]
         ) x
 
 let internal valueOptionValue x =
     unionValue (
-        fun case [|value|] ->
+        fun case args ->
             match case with
             | CaseTag 0 -> ValueNone
-            | CaseTag 1 -> ValueSome value
+            | CaseTag 1 -> ValueSome args.[0]
     ) x
 
 let internal resultValue x =
     unionValue (
-        fun case [|value|] ->
+        fun case args ->
             match case with
-            | CaseTag 0 -> Ok value
-            | CaseTag 1 -> Error value
+            | CaseTag 0 -> Ok args.[0]
+            | CaseTag 1 -> Error args.[0]
     ) x
 
 module internal DynamicList =
@@ -147,7 +147,7 @@ let (|Option|_|) (x: obj) =
 
 let (|ValueOption|_|) (x: obj) =
     match x.GetType () with
-    | ValueOptionType _ -> Some (optionValue x)
+    | ValueOptionType _ -> Some (valueOptionValue x)
     | _ -> None
 
 let (|Result|_|) (x: obj) =
