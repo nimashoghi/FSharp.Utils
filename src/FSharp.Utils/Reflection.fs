@@ -11,6 +11,12 @@ let (|OptionType|_|) (``type``: Type) =
     then Some ``type``.GenericTypeArguments.[0]
     else None
 
+let (|ValueOptionType|_|) (``type``: Type) =
+    if ``type``.IsGenericType &&
+        ``type``.GetGenericTypeDefinition () = typedefof<_ voption>
+    then Some ``type``.GenericTypeArguments.[0]
+    else None
+
 let (|ResultType|_|) (``type``: Type) =
     if ``type``.IsGenericType &&
         ``type``.GetGenericTypeDefinition () = typedefof<Result<_, _>>
@@ -89,6 +95,14 @@ let internal optionValue x =
                 | CaseTag 1 -> Some value
         ) x
 
+let internal valueOptionValue x =
+    unionValue (
+        fun case [|value|] ->
+            match case with
+            | CaseTag 0 -> ValueNone
+            | CaseTag 1 -> ValueSome value
+    ) x
+
 let internal resultValue x =
     unionValue (
         fun case [|value|] ->
@@ -129,6 +143,11 @@ let (|List|_|) (x: obj) =
 let (|Option|_|) (x: obj) =
     match x.GetType () with
     | OptionType _ -> Some (optionValue x)
+    | _ -> None
+
+let (|ValueOption|_|) (x: obj) =
+    match x.GetType () with
+    | ValueOptionType _ -> Some (optionValue x)
     | _ -> None
 
 let (|Result|_|) (x: obj) =

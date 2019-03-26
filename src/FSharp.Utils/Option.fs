@@ -12,16 +12,14 @@ let getOrRaiseWith (f: unit -> #exn) x =
 
 let getOrRaise exn x = getOrRaiseWith (fun () -> exn) x
 
-let ofNullObj (x: 'value) =
-    box x
-    |> Option.ofObj
-    |> Option.map unbox<'value>
+let ofNullObj x =
+    if x = Unchecked.defaultof<_>
+    then None
+    else Some x
 
 let toNullObj (x: 'value option) =
     x
-    |> Option.map box
-    |> Option.toObj
-    |> unbox<'value>
+    |> Option.defaultValue Unchecked.defaultof<'value>
 
 let bindTask
     (f: 'value -> 'result option Task)
