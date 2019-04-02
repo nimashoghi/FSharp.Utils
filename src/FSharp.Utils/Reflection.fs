@@ -35,7 +35,16 @@ let (|ObservableType|_|) (``type``: Type) =
         && ``interface``.GetGenericTypeDefinition () = typedefof<IObservable<_>>)
 
 let (|TaskType|_|) (``type``: Type) =
-    if ``type``.IsGenericType && ``type``.GetGenericTypeDefinition () = typedefof<Task<_>>
+    if ``type`` = typeof<Task>
+    then Some typeof<unit>
+    else if ``type``.IsGenericType && ``type``.GetGenericTypeDefinition () = typedefof<Task<_>>
+    then Some ``type``.GenericTypeArguments.[0]
+    else None
+
+let (|ValueTaskType|_|) (``type``: Type) =
+    if ``type`` = typeof<ValueTask>
+    then Some typeof<unit>
+    else if ``type``.IsGenericType && ``type``.GetGenericTypeDefinition () = typedefof<ValueTask<_>>
     then Some ``type``.GenericTypeArguments.[0]
     else None
 
